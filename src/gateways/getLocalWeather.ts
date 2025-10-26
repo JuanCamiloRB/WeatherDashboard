@@ -6,12 +6,39 @@ export const getLocalWeather = async (
   fallbackCity = "New York"
 ) => {
   try {
+    let data;
+
     if (lat && lon) {
-      return await weatherRepositoryImpl.getWeatherByCoords(lat, lon);
+      // 📍 Buscar por coordenadas
+      data = await weatherRepositoryImpl.getWeatherByCoords(lat, lon);
+    } else {
+      // 🏙️ Buscar por ciudad
+      data = await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
     }
-    return await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
+
+    // ✅ Normaliza siempre el formato de salida
+    const coord = data.coord || {};
+
+    return {
+      ...data,
+      city: data.city ?? fallbackCity,
+      coord: {
+        lat: coord.lat ?? lat ?? 0,
+        lon: coord.lon ?? lon ?? 0,
+      },
+    };
   } catch (error) {
     console.error("⚠️ Error getting local weather:", error);
-    return await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
+
+    const fallback = await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
+
+    return {
+      ...fallback,
+      city: fallback.city ?? fallbackCity,
+      coord: {
+        lat: fallback.coord?.lat ?? 0,
+        lon: fallback.coord?.lon ?? 0,
+      },
+    };
   }
 };

@@ -18,6 +18,8 @@ import { weatherApi } from "../gateways/weatherApi";
 import { WeatherCard } from "../components/WeatherCard";
 import { formatTemperature } from "../presenters/weatherPresenter";
 import { theme } from "../styles/theme";
+import { ForecastCard } from "../components/ForecastCard";
+import { favoritesScreenStyles as styles } from "../styles/favoritesScreen.styles";
 
 export const FavoritesScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,40 +28,48 @@ export const FavoritesScreen: React.FC = () => {
   const [weatherData, setWeatherData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const unit = useSelector((state: RootState) => state.settings.unit);
 
-  useEffect(() => {
+ useEffect(() => {
     if (favorites.length > 0) fetchFavoritesWeather();
     else setWeatherData({});
-  }, [favorites]);
+}, [favorites, unit]);
 
   /** 🔄 Fetch weather data for favorite cities using weatherApi */
   const fetchFavoritesWeather = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  try {
+    setLoading(true);
+    setError(null);
 
-      const results: Record<string, any> = {};
+    const results: Record<string, any> = {};
 
-      // ✅ Fetch todas las ciudades en paralelo usando tu capa API
-      const responses = await Promise.allSettled(
-        favorites.map((city) => weatherApi.fetchCurrentWeather(city))
-      );
+    const responses = await Promise.allSettled(
+      favorites.map(async (city) => {
+        const current = await weatherApi.fetchCurrentWeather(city);
+        const forecast = await weatherApi.fetchForecast(city); // 👈 use your API
 
-      responses.forEach((res) => {
-        if (res.status === "fulfilled") {
-          const data = res.value;
-          results[data.name] = data;
-        }
-      });
+        // Extract 1 forecast every 24h (same hour)
+        const dailyForecasts = forecast.list.filter((_: any, index: number) => index % 8 === 0);
 
-      setWeatherData(results);
-    } catch (err: any) {
-      console.error("❌ Error fetching favorite weather:", err.message);
-      setError("Unable to fetch weather data. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+        return { city, current, forecast: dailyForecasts };
+      })
+    );
+
+    responses.forEach((res) => {
+      if (res.status === "fulfilled") {
+        const { city, current, forecast } = res.value;
+        results[city] = { current, forecast };
+      }
+    });
+
+    setWeatherData(results);
+  } catch (err: any) {
+    console.error("❌ Error fetching favorite weather:", err.message);
+    setError("Unable to fetch weather data. Please try again later.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   /** 🗑️ Remove a city from favorites */
   const handleRemove = async (city: string) => {
@@ -104,43 +114,58 @@ export const FavoritesScreen: React.FC = () => {
               );
 
             return (
-              <View key={city} style={styles.favoriteItemContainer}>
-                <WeatherCard
-                  city={weather.name}
-                  description={weather.weather[0].description}
-                  temperature={formatTemperature(weather.main.temp)}
-                  feelsLike={formatTemperature(weather.main.feels_like)}
-                  humidity={weather.main.humidity}
-                  wind={weather.wind.speed}
-                  sunrise={new Date(
-                    weather.sys.sunrise * 1000
-                  ).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  sunset={new Date(
-                    weather.sys.sunset * 1000
-                  ).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  date={new Date().toLocaleDateString(undefined, {
-                    weekday: "short",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                  isFavorite={true}
-                  onToggleFavorite={() => handleRemove(city)}
-                />
+  <View key={city} style={styles.favoriteItemContainer}>
+    <WeatherCard
+      city={weather.current.name}
+      description={weather.current.weather[0].description}
+     temperature={weather.current.main.temp}
+    feelsLike={weather.current.main.feels_like}
+      humidity={weather.current.main.humidity}
+      wind={weather.current.wind.speed}
+      unit={unit}
+        sunrise={weather.current.sys.sunrise}           // ✅ hora del amanecer (segundos)
+  sunset={weather.current.sys.sunset}             // ✅ hora del atardecer (segundos)
+  timezoneOffset={weather.current.timezone}   
+      date={new Date().toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      })}
+      isFavorite={true}
+      onToggleFavorite={() => handleRemove(city)}
+    />
 
-                <TouchableOpacity
-                  style={styles.trashButton}
-                  onPress={() => handleRemove(city)}
-                >
-                  <Ionicons name="trash-outline" size={22} color="red" />
-                </TouchableOpacity>
-              </View>
-            );
+    {/*  5-day forecast */}
+   <View style={{ marginTop: 10 }}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {weather.forecast.map((f: any, i: number) => {
+        const formattedDate = new Date(f.dt * 1000).toLocaleDateString(undefined, {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+        });
+
+        return (
+            <ForecastCard
+            key={i}
+            date={formattedDate} // 👈 fecha completa
+            temperature={f.main.temp}
+            description={f.weather[0].description}
+            unit={unit}
+            />
+        );
+        })}
+    </ScrollView>
+    </View>
+
+    <TouchableOpacity
+      style={styles.trashButton}
+      onPress={() => handleRemove(city)}
+    >
+      <Ionicons name="trash-outline" size={22} color="red" />
+    </TouchableOpacity>
+  </View>
+);
           })
         )}
       </ScrollView>
@@ -148,40 +173,4 @@ export const FavoritesScreen: React.FC = () => {
   );
 };
 
-/* 🎨 Styles */
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  container: {
-    backgroundColor: theme.colors.background,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: theme.colors.textPrimary,
-    marginBottom: 16,
-  },
-  text: {
-    color: theme.colors.textSecondary,
-    marginTop: 8,
-  },
-  loadingContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  favoriteItemContainer: {
-    position: "relative",
-    marginBottom: 16,
-  },
-  trashButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    backgroundColor: "rgba(255,255,255,0.8)",
-    borderRadius: 20,
-    padding: 6,
-  },
-});
+/* Styles */

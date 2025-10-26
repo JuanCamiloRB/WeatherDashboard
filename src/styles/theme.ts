@@ -6,6 +6,7 @@ export const theme = {
     textSecondary: "#6B7280",
     accent: "#2563EB",
     border: "#E5E7EB",
+    accentLight: "#93C5FD",
   },
   spacing: (value: number) => value * 8,
   radius: {

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { theme } from "../styles/theme";
 
 interface Props {
@@ -10,14 +11,20 @@ interface Props {
 
 export const SearchBar: React.FC<Props> = ({ city, setCity, onSearch }) => (
   <View style={styles.container}>
-    <TextInput
-      style={styles.input}
-      placeholder="Search city..."
-      placeholderTextColor={theme.colors.textSecondary}
-      value={city}
-      onChangeText={setCity}
-    />
-    <TouchableOpacity style={styles.button} onPress={onSearch}>
+    {/* Input con ícono */}
+    <View style={styles.inputWrapper}>
+      <Ionicons name="search-outline" size={18} color="#6B7280" style={styles.icon} />
+      <TextInput
+        style={styles.input}
+        placeholder="Search city..."
+        placeholderTextColor="#6B7280"
+        value={city}
+        onChangeText={setCity}
+      />
+    </View>
+
+    {/* Botón Search */}
+    <TouchableOpacity style={styles.button} onPress={onSearch} activeOpacity={0.8}>
       <Text style={styles.buttonText}>Search</Text>
     </TouchableOpacity>
   </View>
@@ -26,30 +33,36 @@ export const SearchBar: React.FC<Props> = ({ city, setCity, onSearch }) => (
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
+    alignItems: "center",
+    marginVertical: 12,
+  },
+  inputWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F3F4F6",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 40,
+  },
+  icon: {
+    marginRight: 6,
   },
   input: {
     flex: 1,
-    paddingHorizontal: 12,
-    fontSize: 16,
+    fontSize: 15,
     color: "#111827",
   },
   button: {
-    backgroundColor: "#2563EB",
+    marginLeft: 8,
+    backgroundColor: "#6B7280",
     borderRadius: 8,
-    paddingHorizontal: 16,
-    justifyContent: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
   },
   buttonText: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontWeight: "600",
+    fontSize: 14,
   },
 });

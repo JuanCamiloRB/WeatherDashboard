@@ -1,20 +1,40 @@
 import { configureStore } from "@reduxjs/toolkit";
 import weatherReducer from "./weatherSlice";
-import { persistReducer, persistStore } from "redux-persist";
+import settingsReducer from "./settingSlice";
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 
-const persistConfig = {
-  key: "root",
+// 🎯 Persistencia para el clima (solo favoritos)
+const weatherPersistConfig = {
+  key: "weather",
   storage: AsyncStorage,
-  whitelist: ["favorites"], // only persist what you need
+  whitelist: ["favorites"], // Solo favoritos
 };
 
-const persistedReducer = persistReducer(persistConfig, weatherReducer);
+// 🎯 Persistencia para la configuración (unidad °C/°F)
+const settingsPersistConfig = {
+  key: "settings",
+  storage: AsyncStorage,
+  whitelist: ["unit"],
+};
+
+// Reducers persistidos
+const persistedWeatherReducer = persistReducer(weatherPersistConfig, weatherReducer);
+const persistedSettingsReducer = persistReducer(settingsPersistConfig, settingsReducer);
 
 export const store = configureStore({
   reducer: {
-    weather: persistedReducer,
+    weather: persistedWeatherReducer,
+    settings: persistedSettingsReducer, // 🆕 Añadido
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -25,5 +45,7 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+// 🧩 Tipos globales
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
