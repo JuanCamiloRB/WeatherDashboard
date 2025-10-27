@@ -5,9 +5,9 @@ import { formatTemperature } from "../presenters/weatherPresenter";
 
 interface ForecastCardProps {
   date: string;
-  temperature: number; // 👈 debe ser número, no string
+  temperature: number; 
   description: string;
-  unit: "metric" | "imperial"; // 👈 agregamos la unidad
+  unit: "metric" | "imperial"; 
 }
 
 export const ForecastCard: React.FC<ForecastCardProps> = ({

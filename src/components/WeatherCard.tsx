@@ -11,9 +11,9 @@ interface Props {
   feelsLike?: number;
   humidity?: number;
   wind?: number;
-  sunrise?: number;          // segundos (sys.sunrise)
-  sunset?: number;           // segundos (sys.sunset)
-  timezoneOffset?: number;   // segundos (timezone)
+  sunrise?: number;          // seconds (sys.sunrise)
+  sunset?: number;           // seconds (sys.sunset)
+  timezoneOffset?: number;   // seconds (timezone)
   date?: string;
   isFavorite?: boolean;
   onToggleFavorite?: () => void;

@@ -32,7 +32,7 @@ export const DashboardScreen: React.FC = () => {
   const [forecast, setForecast] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔁 Refresca clima cuando cambia la unidad (°C ↔ °F)
+  // update the temperature
   useEffect(() => {
     const refreshWeather = async () => {
       if (!localWeather?.city) return;
@@ -50,20 +50,19 @@ export const DashboardScreen: React.FC = () => {
     refreshWeather();
   }, [unit]);
 
-  // 🌍 Inicialización principal
   useEffect(() => {
     const initialize = async () => {
       try {
         setLoading(true);
 
-        // 📦 Cargar favoritos e historial
+        // load favorites and history
         const storedFavorites = await AsyncStorage.getItem("favorites");
         if (storedFavorites) dispatch(loadFavorites(JSON.parse(storedFavorites)));
 
         const storedHistory = await AsyncStorage.getItem("history");
         if (storedHistory) dispatch(loadHistory(JSON.parse(storedHistory)));
 
-        // 📍 Pedir permisos de ubicación
+        // request location permits
         let hasPermission = false;
         if (Platform.OS === "ios") {
           const permission = await Geolocation.requestAuthorization("whenInUse");
@@ -80,7 +79,7 @@ export const DashboardScreen: React.FC = () => {
           hasPermission = granted === PermissionsAndroid.RESULTS.GRANTED;
         }
 
-        // 🌦️ Obtener clima local o fallback
+        // getting local weather
        if (hasPermission) {
   Geolocation.getCurrentPosition(
   async (pos) => {
@@ -120,19 +119,19 @@ export const DashboardScreen: React.FC = () => {
     initialize();
   }, []);
 
-  //  Obtener pronóstico (cada 3h → 5 días)
+  //  getting forecast every 3 h to five days
   const fetchForecast = async (city?: string, lat?: number, lon?: number) => {
   try {
     let data;
 
     if (lat && lon) {
-      console.log("📍 Fetching forecast by coords:", { lat, lon });
+      console.log(" Fetching forecast by coords:", { lat, lon });
       data = await weatherApi.fetchForecast(undefined, lat, lon);
     } else if (city && city.trim().length > 0) {
-      console.log("🏙️ Fetching forecast by city:", city);
+      console.log(" Fetching forecast by city:", city);
       data = await weatherApi.fetchForecast(city);
     } else {
-      console.warn("⚠️ No valid city or coordinates for forecast");
+      console.warn(" No valid city or coordinates for forecast");
       return;
     }
 
@@ -144,10 +143,10 @@ export const DashboardScreen: React.FC = () => {
         description: item.weather[0].description,
       }));
 
-    console.log("📅 Processed forecast:", daily);
+    console.log("rocessed forecast:", daily);
     setForecast(daily);
   } catch (err: any) {
-    console.error("❌ Error fetching forecast:", err?.response?.data || err?.message || err);
+    console.error(" Error fetching forecast:", err?.response?.data || err?.message || err);
   }
 };
 
@@ -170,7 +169,7 @@ export const DashboardScreen: React.FC = () => {
       <ScrollView style={styles.screen} contentContainerStyle={{ padding: 16 }}>
         {localWeather ? (
           <>
-            {/* ☀️ Clima actual */}
+            {/*  currrent */}
             <WeatherCard
               city={localWeather.city}
               description={localWeather.description}
@@ -191,33 +190,33 @@ export const DashboardScreen: React.FC = () => {
               onToggleFavorite={() => {}}
             />
 
-            {/* Pronóstico */}
+            {/* forecast */}
            {forecast.length > 0 && (
-  <View style={{ marginTop: 20 }}>
-    <Text style={styles.sectionTitle}>5-Day Forecast</Text>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
-      {forecast.map((f, i) => {
-        const formattedDate = new Date(f.dt * 1000).toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-        });
+          <View style={{ marginTop: 20 }}>
+            <Text style={styles.sectionTitle}>5-Day Forecast</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+              {forecast.map((f, i) => {
+                const formattedDate = new Date(f.dt * 1000).toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                });
 
-        return (
-          <ForecastCard
-            key={i}
-            date={formattedDate} // 👈 pasa la fecha formateada
-            temperature={f.temp}
-            description={f.description}
-            unit={unit}
-          />
-        );
-      })}
-    </ScrollView>
-  </View>
-)}
+                return (
+                  <ForecastCard
+                    key={i}
+                    date={formattedDate} // pass the formate date
+                    temperature={f.temp}
+                    description={f.description}
+                    unit={unit}
+                  />
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
 
-            {/*  Favoritos */}
+            {/*  favorites */}
             <Text style={styles.sectionTitle}>Favorite Cities</Text>
             {favorites.length === 0 ? (
               <Text style={styles.emptyText}>No favorite cities yet.</Text>
@@ -236,7 +235,7 @@ export const DashboardScreen: React.FC = () => {
               ))
             )}
 
-            {/* 🕓 Historial */}
+            {/* hirotry */}
             <Text style={styles.sectionTitle}>Search History</Text>
             {history.length === 0 ? (
               <Text style={styles.emptyText}>No recent searches yet.</Text>

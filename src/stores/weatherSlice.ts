@@ -7,7 +7,7 @@ export interface WeatherState {
   forecast: any[];
   favorites: string[];
   history: string[];
-  suggestions: any[]; // 👈 nuevo
+  suggestions: any[]; 
   loading: boolean;
   error: string | null;
 }
@@ -17,12 +17,12 @@ const initialState: WeatherState = {
   forecast: [],
   favorites: [],
   history: [],
-  suggestions: [], // 👈 nuevo
+  suggestions: [], 
   loading: false,
   error: null,
 };
 
-// 🔍 Buscar clima por nombre o coordenadas
+//  searching weather by coord
 export const fetchWeather = createAsyncThunk(
   "weather/fetchWeather",
   async (arg: string | { lat: number; lon: number }, { rejectWithValue }) => {
@@ -40,7 +40,7 @@ export const fetchWeather = createAsyncThunk(
         cityName = current.name;
       }
 
-      // 💾 Guardar historial localmente
+      // saving data locally
       const storedHistory = (await AsyncStorage.getItem("history")) || "[]";
       const history = JSON.parse(storedHistory);
       if (!history.includes(cityName)) history.push(cityName);
@@ -48,13 +48,13 @@ export const fetchWeather = createAsyncThunk(
 
       return { current, forecast: forecast.list || [], city: cityName };
     } catch (err: any) {
-      console.log("❌ Error al obtener el clima:", err.message);
+      console.log(" Error getting the weather:", err.message);
       return rejectWithValue(err.message);
     }
   }
 );
 
-// 🌤️ Nuevo thunk para obtener ejemplos de ciudades populares
+// popular cities
 export const fetchExampleCities = createAsyncThunk(
   "weather/fetchExampleCities",
   async (_, { rejectWithValue }) => {
@@ -68,7 +68,7 @@ export const fetchExampleCities = createAsyncThunk(
       );
       return results;
     } catch (err: any) {
-      console.log("❌ Error al obtener ejemplos:", err.message);
+      console.log(" error getting examples:", err.message);
       return rejectWithValue(err.message);
     }
   }
@@ -81,7 +81,7 @@ export const fetchCitySuggestions = createAsyncThunk(
       const data = await weatherApi.fetchCitySuggestions(query);
       return data;
     } catch (err: any) {
-      console.log("❌ Error fetching city suggestions:", err.message);
+      console.log(" Error fetching city suggestions:", err.message);
       return rejectWithValue(err.message);
     }
   }
@@ -117,7 +117,7 @@ clearSuggestions: (state) => {
   },
   extraReducers: (builder) => {
     builder
-      // 🔹 Estado al buscar clima
+     // searching the weather states
       .addCase(fetchWeather.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -135,7 +135,7 @@ clearSuggestions: (state) => {
         state.error = action.payload as string;
       })
 
-      // 🔹 Estado al obtener ejemplos
+      // states loading examples
       .addCase(fetchExampleCities.pending, (state) => {
         state.loading = true;
         state.error = null;

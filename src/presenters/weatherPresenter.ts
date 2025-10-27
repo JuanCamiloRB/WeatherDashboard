@@ -7,7 +7,7 @@ export const formatTemperature = (
   const value =
     unit === "metric"
       ? temp.toFixed(1) // Celsius
-      : ((temp * 9) / 5 + 32).toFixed(1); // Convierte a Fahrenheit si el valor original está en °C
+      : ((temp * 9) / 5 + 32).toFixed(1); // trying to conver to farhenheit
 
   const symbol = unit === "metric" ? "°C" : "°F";
   return `${value}${symbol}`;
@@ -32,19 +32,17 @@ export const formatDate = (dateString: string) => {
 export const formatLocalTime = (timestampSeconds?: number, timezoneOffsetSeconds?: number): string => {
   if (!timestampSeconds || timezoneOffsetSeconds === undefined || timezoneOffsetSeconds === null) return "--";
 
-  // timestampSeconds: p.ej. sys.sunrise (UTC seconds)
-  // timezoneOffsetSeconds: p.ej. timezone (segundos offset desde UTC para la ciudad)
-  // Construimos un instante UTC ajustado al timezone de la ciudad:
+//trying to convert is there is a offset per city
   const adjustedMs = (timestampSeconds + timezoneOffsetSeconds) * 1000;
 
-  // Creamos Date a partir de ese instante (Date guarda ms desde epoch absoluto)
+  // create date
   const adjustedDate = new Date(adjustedMs);
 
-  // Usamos getUTCHours / getUTCMinutes para evitar que el dispositivo aplique su propia TZ.
+  // if we are using geolocationg we try to unable that
   const hoursUTC = adjustedDate.getUTCHours();
   const minutesUTC = adjustedDate.getUTCMinutes();
 
-  // Convertimos a formato 12h (opcional) — o deja 24h si prefieres.
+  // converting to 12h format
   const ampm = hoursUTC >= 12 ? "PM" : "AM";
   const hours12 = hoursUTC % 12 === 0 ? 12 : hoursUTC % 12;
   const minutesPadded = minutesUTC.toString().padStart(2, "0");

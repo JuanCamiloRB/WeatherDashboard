@@ -180,7 +180,7 @@ const unit = useSelector((state: RootState) => state.settings.unit);
               ) : (
                 exampleWeathers.map((item, index) => (
                     <TouchableOpacity
-                        key={`${item.name}-${index}`} // ✅ clave única garantizada
+                        key={`${item.name}-${index}`} 
                         onPress={() => onExamplePress(item.name)}
                         activeOpacity={0.8}
                         style={styles.exampleCardWrapper}
@@ -211,15 +211,15 @@ const unit = useSelector((state: RootState) => state.settings.unit);
           </ScrollView>
         )}
 
-        {/* ❌ City not found */}
+        {/* City not found */}
         {!loading && searched && error && (
           <View style={styles.centerContainer}>
-            <Text style={styles.errorText}>❌ City not found</Text>
+            <Text style={styles.errorText}> City not found</Text>
             <Text style={styles.infoText}>Please check the name and try again.</Text>
           </View>
         )}
 
-        {/* ✅ City found → show weather + forecast */}
+        {/*  City found → show weather + forecast */}
         {!loading && searched && currentWeather && !error && (
           <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
             <WeatherCard
@@ -230,8 +230,8 @@ const unit = useSelector((state: RootState) => state.settings.unit);
             unit={unit}
             humidity={currentWeather.main.humidity}
             wind={currentWeather.wind.speed}
-            sunrise={currentWeather.sys.sunrise}        // ✅ correcto
-            sunset={currentWeather.sys.sunset}          // ✅ correcto
+            sunrise={currentWeather.sys.sunrise}        
+            sunset={currentWeather.sys.sunset}         
             timezoneOffset={currentWeather.timezone}  
             date={new Date().toLocaleDateString(undefined, {
             weekday: "short",
@@ -260,7 +260,7 @@ const unit = useSelector((state: RootState) => state.settings.unit);
                     return (
                         <ForecastCard
                         key={i}
-                        date={formattedDate} // 👈 fecha completa
+                        date={formattedDate} // 
                         temperature={f.main.temp}
                         description={f.weather[0].description}
                         unit={unit}

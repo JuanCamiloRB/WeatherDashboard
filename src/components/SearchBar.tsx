@@ -11,7 +11,7 @@ interface Props {
 
 export const SearchBar: React.FC<Props> = ({ city, setCity, onSearch }) => (
   <View style={styles.container}>
-    {/* Input con ícono */}
+    {/* Input with Icon*/}
     <View style={styles.inputWrapper}>
       <Ionicons name="search-outline" size={18} color="#6B7280" style={styles.icon} />
       <TextInput

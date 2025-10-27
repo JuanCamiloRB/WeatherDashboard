@@ -35,7 +35,7 @@ export const FavoritesScreen: React.FC = () => {
     else setWeatherData({});
 }, [favorites, unit]);
 
-  /** 🔄 Fetch weather data for favorite cities using weatherApi */
+  /**  Fetch weather data for favorite cities using weatherApi */
   const fetchFavoritesWeather = async () => {
   try {
     setLoading(true);
@@ -64,21 +64,21 @@ export const FavoritesScreen: React.FC = () => {
 
     setWeatherData(results);
   } catch (err: any) {
-    console.error("❌ Error fetching favorite weather:", err.message);
+    console.error(" Error fetching favorite weather:", err.message);
     setError("Unable to fetch weather data. Please try again later.");
   } finally {
     setLoading(false);
   }
 };
 
-  /** 🗑️ Remove a city from favorites */
+  /** Remove a city from favorites */
   const handleRemove = async (city: string) => {
     try {
       const updated = favorites.filter((f) => f !== city);
       await AsyncStorage.setItem("favorites", JSON.stringify(updated));
       dispatch(loadFavorites(updated));
     } catch (err) {
-      console.error("❌ Error removing favorite:", err);
+      console.error(" Error removing favorite:", err);
     }
   };
 
@@ -90,12 +90,12 @@ export const FavoritesScreen: React.FC = () => {
       >
         <Text style={styles.title}>My Favorite Cities</Text>
 
-        {/* ⚠️ Estado de error */}
+        {/* error*/}
         {error && (
           <Text style={[styles.text, { color: "red" }]}>{error}</Text>
         )}
 
-        {/* ⏳ Estado de carga */}
+        {/* loading */}
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={theme.colors.accent} />
@@ -123,8 +123,8 @@ export const FavoritesScreen: React.FC = () => {
       humidity={weather.current.main.humidity}
       wind={weather.current.wind.speed}
       unit={unit}
-        sunrise={weather.current.sys.sunrise}           // ✅ hora del amanecer (segundos)
-  sunset={weather.current.sys.sunset}             // ✅ hora del atardecer (segundos)
+        sunrise={weather.current.sys.sunrise}           
+  sunset={weather.current.sys.sunset}             
   timezoneOffset={weather.current.timezone}   
       date={new Date().toLocaleDateString(undefined, {
         weekday: "short",
@@ -135,37 +135,37 @@ export const FavoritesScreen: React.FC = () => {
       onToggleFavorite={() => handleRemove(city)}
     />
 
-    {/*  5-day forecast */}
-   <View style={{ marginTop: 10 }}>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {weather.forecast.map((f: any, i: number) => {
-        const formattedDate = new Date(f.dt * 1000).toLocaleDateString(undefined, {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-        });
+     {/*  5-day forecast */}
+        <View style={{ marginTop: 10 }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {weather.forecast.map((f: any, i: number) => {
+                const formattedDate = new Date(f.dt * 1000).toLocaleDateString(undefined, {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                });
 
-        return (
-            <ForecastCard
-            key={i}
-            date={formattedDate} // 👈 fecha completa
-            temperature={f.main.temp}
-            description={f.weather[0].description}
-            unit={unit}
-            />
-        );
-        })}
-    </ScrollView>
-    </View>
+                return (
+                    <ForecastCard
+                    key={i}
+                    date={formattedDate} 
+                    temperature={f.main.temp}
+                    description={f.weather[0].description}
+                    unit={unit}
+                    />
+                );
+             })}
+                </ScrollView>
+                </View>
 
-    <TouchableOpacity
-      style={styles.trashButton}
-      onPress={() => handleRemove(city)}
-    >
-      <Ionicons name="trash-outline" size={22} color="red" />
-    </TouchableOpacity>
-  </View>
-);
+                <TouchableOpacity
+                style={styles.trashButton}
+                onPress={() => handleRemove(city)}
+                >
+                <Ionicons name="trash-outline" size={22} color="red" />
+                </TouchableOpacity>
+            </View>
+            );
           })
         )}
       </ScrollView>

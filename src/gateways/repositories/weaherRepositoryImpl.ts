@@ -1,6 +1,6 @@
 import { weatherApi } from "../weatherApi";
 
-// 🧩 Modelo tipado del clima
+// model for the type weather
 export interface WeatherEntity {
   city: string;
   coord: {
@@ -17,7 +17,7 @@ export interface WeatherEntity {
   timezone: number;
 }
 
-// 🏗️ Implementación del repositorio
+//  implementing repo
 export const weatherRepositoryImpl = {
   async getWeatherByCity(city: string): Promise<WeatherEntity> {
     const data = await weatherApi.fetchCurrentWeather(city);
@@ -39,7 +39,7 @@ export const weatherRepositoryImpl = {
   },
 };
 
-// 🔄 Convertir datos crudos a modelo limpio
+// conver data into clean model
 const mapToEntity = (data: any): WeatherEntity => ({
   city: data.name ?? "Unknown",
   description: data.weather?.[0]?.description ?? "N/A",

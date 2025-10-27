@@ -9,14 +9,13 @@ export const getLocalWeather = async (
     let data;
 
     if (lat && lon) {
-      // 📍 Buscar por coordenadas
+      //  searching with coor
       data = await weatherRepositoryImpl.getWeatherByCoords(lat, lon);
     } else {
-      // 🏙️ Buscar por ciudad
+      // searching by city
       data = await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
     }
-
-    // ✅ Normaliza siempre el formato de salida
+    //  trying to return the data 
     const coord = data.coord || {};
 
     return {
@@ -28,7 +27,7 @@ export const getLocalWeather = async (
       },
     };
   } catch (error) {
-    console.error("⚠️ Error getting local weather:", error);
+    console.error(" Error getting local weather:", error);
 
     const fallback = await weatherRepositoryImpl.getWeatherByCity(fallbackCity);
 

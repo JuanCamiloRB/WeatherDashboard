@@ -5,7 +5,7 @@ const API_KEY = "08db7e8c08cf521b308406b429394ef0";
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 export const weatherApi = {
-  // 🌤️ Obtener clima actual por nombre de ciudad
+  //  getting the weather of the city by name
   fetchCurrentWeather: async (city: string) => {
     const unit = store.getState().settings.unit;
     const response = await axios.get(`${BASE_URL}/weather`, {
@@ -25,7 +25,7 @@ export const weatherApi = {
     };
   },
 
-  // 🌍 Obtener clima actual por coordenadas
+  //  getting data by coord
   fetchCurrentWeatherByCoords: async (lat: number, lon: number) => {
     const unit = store.getState().settings.unit;
     try {
@@ -43,25 +43,25 @@ export const weatherApi = {
         coord: data.coord,
       };
     } catch (error: any) {
-      console.error("❌ Error fetching local weather:", error.message);
+      console.error(" Error fetching local weather:", error.message);
       throw new Error("Unable to fetch local weather data");
     }
   },
 
-  // ☀️ Obtener pronóstico de 5 días (por coordenadas o ciudad)
+  //  getting forecast for 5 days
   fetchForecast: async (city?: string, lat?: number, lon?: number) => {
   const unit = store.getState().settings.unit; // °C / °F
   const params: any = { appid: API_KEY, units: unit };
 
   if (lat != null && lon != null) {
-    // ✅ Si hay coordenadas, úsalas
+    // if there is coord we can use it
     params.lat = lat;
     params.lon = lon;
   } else if (city && city.trim().length > 0) {
-    // ✅ Si no, usa el nombre de ciudad
+    //  if dont coord we use the name of the cityu¡
     params.q = city.trim();
   } else {
-    throw new Error("❌ No valid location provided for forecast");
+    throw new Error(" No valid location provided for forecast");
   }
 
   try {
@@ -69,12 +69,12 @@ export const weatherApi = {
     console.log("🌤️ Forecast API Response:", response.data);
     return response.data;
   } catch (error: any) {
-    console.error("🚨 Forecast request failed:", error.response?.data || error.message);
+    console.error(" Forecast request failed:", error.response?.data || error.message);
     throw error;
   }
 },
 
-  // 🔍 Autocompletado de ciudades
+  //  autocomplete cities
   fetchCitySuggestions: async (query: string) => {
     const response = await axios.get(`https://api.openweathermap.org/geo/1.0/direct`, {
       params: { q: query, limit: 5, appid: API_KEY },

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { theme } from "../styles/theme"; // 👈 Create if you don’t have it yet (see below)
+import { theme } from "../styles/theme";
 
 interface Props {
   city: string;
