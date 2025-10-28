@@ -86,7 +86,7 @@ export const DashboardScreen: React.FC = () => {
     const { latitude, longitude } = pos.coords;
     const weather = await getLocalWeather(latitude, longitude);
     setLocalWeather(weather);
-    await fetchForecast(weather.city, weather.coord?.lat, weather.coord?.lon); // ✅
+    await fetchForecast(weather.city, weather.coord?.lat, weather.coord?.lon); // 
     setInitialized(true);
     setLoading(false);
   },
@@ -186,8 +186,21 @@ export const DashboardScreen: React.FC = () => {
                 month: "short",
                 day: "numeric",
               })}
-              isFavorite={false}
-              onToggleFavorite={() => {}}
+              isFavorite={favorites.includes(localWeather.city)}
+              onToggleFavorite={async () => {
+                  let updatedFavorites;
+                  if (favorites.includes(localWeather.city)) {
+                    // Remove city
+                    updatedFavorites = favorites.filter((f) => f !== localWeather.city);
+                  } else {
+                    // Add city
+                    updatedFavorites = [...favorites, localWeather.city];
+                  }
+
+                  // Persist and update Redux
+                  await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+                  dispatch(loadFavorites(updatedFavorites));
+               }}
             />
 
             {/* forecast */}

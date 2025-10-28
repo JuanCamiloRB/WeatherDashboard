@@ -21,16 +21,7 @@ export const HeaderBar: React.FC = () => {
         <Text style={styles.title}>Weather Dashboard</Text>
       </View>
 
-      <View style={styles.switchContainer}>
-        <Text style={styles.unitLabel}>°C</Text>
-        <Switch
-          value={unit === "imperial"}
-          onValueChange={handleToggle}
-          thumbColor={theme.colors.accent}
-          trackColor={{ false: "#ccc", true: theme.colors.accentLight }}
-        />
-        <Text style={styles.unitLabel}>°F</Text>
-      </View>
+      
     </View>
   );
 };
