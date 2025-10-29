@@ -2,15 +2,20 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
+
+
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-## Step 1: Start Metro
+## Step 1: install NPM
+npm install
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
 To start the Metro dev server, run the following command from the root of your React Native project:
 
 ```sh
+
+there 
 # Using npm
 npm start
 
@@ -18,19 +23,44 @@ npm start
 yarn start
 ```
 
-## Step 2: Build and run your app
-
+## Step 2: iOS Setup
+Open the iOS folder:
+cd ios
 With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+pod install
+## Run IOS
+npx react-native run-ios
 
 ### Android
+Open the android folder:
+cd android
 
-```sh
-# Using npm
-npm run android
+## Create a file named local.properties if it doesn’t exist.
 
-# OR using Yarn
-yarn android
-```
+## Add your Android SDK path (update the username if different):
+
+ ## sdk.dir=/Users/your_user/Library/Android/sdk
+
+Save the file.
+
+## Open Android Studio, start an emulator (or connect a physical device).
+
+## Run the app:
+
+npx react-native run-android
+
+ # Notes
+
+Make sure Android SDK and CocoaPods are properly installed.
+
+If you encounter build issues, try cleaning:
+
+cd android && ./gradlew clean
+
+
+To check your environment setup:
+
+npx react-native doctor
 
 ### iOS
 
