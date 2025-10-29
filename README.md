@@ -1,3 +1,33 @@
+ # WeatherBoard
+
+  WeatherBoard is a mobile weather dashboard built with React Native, designed to deliver real-time weather updates, 5-day forecasts, and personalized features like favorite cities and temperature unit preferences.
+  It uses the OpenWeather API, Redux Toolkit, Redux Persist, and Async Storage to ensure smooth performance and data persistence across sessions.
+
+# Project Architecture
+
+## Architecture Pattern:
+
+  * Feature-based structure — components, slices, and gateways are modularly separated.
+
+## State Management: Redux Toolkit
+
+## Persistence: Redux Persis + AsyncStorage
+
+## Network Layer: Axios for API requests
+
+## API Provider: OpenWeatherMap API
+
+## Navigation: React Navigation
+
+  * Real-time local weather using Geolocation
+  * 5-day forecast using OpenWeather API
+  * Add/remove favorite cities
+  * View search history
+  * Switch between Celsius / Fahrenheit
+  * Persistent state using Redux Persist + AsyncStorage
+  * Clean modular code architecture
+
+UI: React Native core components + custom styles with theming
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
