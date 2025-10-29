@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { theme } from "../styles/theme";
 import { formatTemperature } from "../presenters/weatherPresenter";
+import { forecastCardstyles as styles } from "../styles/componentsStyles/forecastCard.styles";
 
 interface ForecastCardProps {
   date: string;
@@ -24,30 +25,3 @@ export const ForecastCard: React.FC<ForecastCardProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: theme.colors.card,
-    padding: theme.spacing(2),
-    borderRadius: theme.radius.md,
-    marginRight: theme.spacing(2),
-    alignItems: "center",
-    ...theme.shadow.card,
-  },
-  date: {
-    fontSize: 14,
-    color: theme.colors.textSecondary,
-    marginBottom: 4,
-  },
-  temp: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: theme.colors.textPrimary,
-  },
-  desc: {
-    fontSize: 14,
-    color: theme.colors.textSecondary,
-    marginTop: 4,
-    textTransform: "capitalize",
-  },
-});

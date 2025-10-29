@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { theme } from "./theme";
+import { theme } from "../theme";
 
 export const historyScreenStyles = StyleSheet.create({
   container: { backgroundColor: theme.colors.background },

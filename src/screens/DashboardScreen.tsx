@@ -18,7 +18,7 @@ import { FavoriteCityItem } from "../components/FavoriteCityItem";
 import { ForecastCard } from "../components/ForecastCard";
 import { theme } from "../styles/theme";
 import { HeaderBar } from "../components/HeaderBar";
-import { dashboardScreenStyles as styles } from "../styles/dashboardScreen.styles";
+import { dashboardScreenStyles as styles } from "../styles/screenStyles/dashboardScreen.styles";
 import { getLocalWeather } from "../gateways/getLocalWeather";
 import { weatherApi } from "../gateways/weatherApi";
 

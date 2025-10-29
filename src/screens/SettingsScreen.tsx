@@ -3,7 +3,7 @@ import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/weatherStore";
 import { setUnit } from "../stores/settingSlice";
-import { settingsScreenStyles as styles } from "../styles/settingsScreen.styles";
+import { settingsScreenStyles as styles } from "../styles/screenStyles/settingsScreen.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../styles/theme";
 

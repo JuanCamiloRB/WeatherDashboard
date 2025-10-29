@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { historyItemStyles as styles } from "../styles/componentsStyles/historyItem.styles";
 
 interface Props {
   city: string;
@@ -13,7 +14,3 @@ export const HistoryItem: React.FC<Props> = ({ city, onSelect }) => (
   </View>
 );
 
-const styles = StyleSheet.create({
-  container: { flexDirection: "row", justifyContent: "space-between", marginVertical: 4 },
-  text: { fontSize: 16 },
-});

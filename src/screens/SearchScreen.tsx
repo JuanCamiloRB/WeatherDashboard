@@ -26,7 +26,7 @@ import { ForecastCard } from "../components/ForecastCard";
 import { formatLocalTime, formatTemperature } from "../presenters/weatherPresenter";
 import { theme } from "../styles/theme";
 import { weatherApi } from "../gateways/weatherApi";
-import { searchScreenStyles as styles } from "../styles/searchScreen.styles";
+import { searchScreenStyles as styles } from "../styles/screenStyles/searchScreen.styles";
 
 export const SearchScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

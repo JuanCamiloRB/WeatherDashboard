@@ -1,8 +1,8 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { searchBarStyles as styles } from "../styles/componentsStyles/searchBar.styles";
 import { theme } from "../styles/theme";
-
 interface Props {
   city: string;
   setCity: (value: string) => void;
@@ -30,39 +30,3 @@ export const SearchBar: React.FC<Props> = ({ city, setCity, onSearch }) => (
   </View>
 );
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 12,
-  },
-  inputWrapper: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F3F4F6",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    height: 40,
-  },
-  icon: {
-    marginRight: 6,
-  },
-  input: {
-    flex: 1,
-    fontSize: 15,
-    color: "#111827",
-  },
-  button: {
-    marginLeft: 8,
-    backgroundColor: "#6B7280",
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
-    fontSize: 14,
-  },
-});

@@ -19,7 +19,7 @@ import { WeatherCard } from "../components/WeatherCard";
 import { formatTemperature } from "../presenters/weatherPresenter";
 import { theme } from "../styles/theme";
 import { ForecastCard } from "../components/ForecastCard";
-import { favoritesScreenStyles as styles } from "../styles/favoritesScreen.styles";
+import { favoritesScreenStyles as styles } from "../styles/screenStyles/favoritesScreen.styles";
 
 export const FavoritesScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

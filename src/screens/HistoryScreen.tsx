@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from "../stores/weatherStore";
 import { loadHistory } from "../stores/weatherSlice";
 import { theme } from "../styles/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { historyScreenStyles as styles } from "../styles/historyScreen.styles";
+import { historyScreenStyles as styles } from "../styles/screenStyles/historyScreen.styles";
 export const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { history } = useSelector((s: RootState) => s.weather);
