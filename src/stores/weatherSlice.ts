@@ -79,9 +79,17 @@ export const fetchCitySuggestions = createAsyncThunk(
   async (query: string, { rejectWithValue }) => {
     try {
       const data = await weatherApi.fetchCitySuggestions(query);
-      return data;
+
+      // Remove duplicates based on name + country
+      const uniqueCities = data.filter(
+        (city: any, index: number, self: any[]) =>
+          index === self.findIndex((c) => c.name === city.name && c.country === city.country)
+      );
+
+      console.log("Unique cities:", uniqueCities);
+      return uniqueCities;
     } catch (err: any) {
-      console.log(" Error fetching city suggestions:", err.message);
+      console.log("Error fetching city suggestions:", err.message);
       return rejectWithValue(err.message);
     }
   }
