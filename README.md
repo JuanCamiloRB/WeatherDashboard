@@ -1,16 +1,55 @@
+ # WeatherBoard
+
+  WeatherBoard is a mobile weather dashboard built with React Native, designed to deliver real-time weather updates, 5-day forecasts, and personalized features like favorite cities and temperature unit preferences.
+ It integrates OpenWeather API, Redux Toolkit, Redux Persist, AsyncStorage, and React Testing Library for unit testing — ensuring smooth performance, reliable data persistence, and maintainable, testable code.
+# Project Architecture
+
+## Architecture Pattern:
+
+  * Feature-based structure — components, slices, and gateways are modularly separated.
+
+## State Management: Redux Toolkit
+
+## Persistence: Redux Persis + AsyncStorage
+
+## Network Layer: Axios for API requests
+
+## API Provider: OpenWeatherMap API
+
+## Testing
+
+ React Testing Library + Jest — for component, integration, and async API tests in a React Native environment.
+
+## Navigation: React Navigation
+
+  * Real-time local weather using Geolocation
+  * 5-day forecast using OpenWeather API
+  * Add/remove favorite cities
+  * View search history
+  * Switch between Celsius / Fahrenheit
+  * Persistent state using Redux Persist + AsyncStorage
+  * Clean modular code architecture
+  * Unit testing with React Testing Library and Jest
+
+UI: React Native core components + custom styles with theming
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
+
+
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-## Step 1: Start Metro
+## Step 1: install NPM 
+  #npm install
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
 To start the Metro dev server, run the following command from the root of your React Native project:
 
 ```sh
+
+there 
 # Using npm
 npm start
 
@@ -18,19 +57,47 @@ npm start
 yarn start
 ```
 
-## Step 2: Build and run your app
-
+## Step 2: iOS Setup
+Open the iOS folder:
+cd ios
 With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+pod install
+## Run IOS
+npx react-native run-ios
 
 ### Android
+Open the android folder:
+cd android
 
-```sh
-# Using npm
-npm run android
+## Create a file named local.properties if it doesn’t exist.
 
-# OR using Yarn
-yarn android
-```
+## Add your Android SDK path (update the username if different):
+
+ ## sdk.dir=/Users/your_user/Library/Android/sdk
+
+Save the file.
+
+## Open Android Studio, start an emulator (or connect a physical device).
+
+## Run the app:
+
+npx react-native run-android
+
+ # Notes
+
+Make sure Android SDK and CocoaPods are properly installed.
+
+If you encounter build issues, try cleaning:
+
+cd android && ./gradlew clean
+
+
+To check your environment setup:
+
+npx react-native doctor
+
+## Run Tests:
+ * npm test
 
 ### iOS
 
